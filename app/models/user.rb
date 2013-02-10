@@ -4,29 +4,29 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   after_create { send_welcome_email }
 
-  validate :password, length: { minimum: 6, on: :create }
+  validates :password, length: { minimum: 6, on: :create }
 
-  validate :username, exclusion: { 
-                        in: %w(admin superuser root goodbrews guest),
-                        message: 'is reserved'
-                      },
-                      format: {
-                        with: /\A\w+\Z/,
-                        message: 'can only contain letters, numbers, and underscores'
-                      },
-                      uniqueness: {
-                        case_sensitive: false,
-                        message: 'has already been taken'
-                      },
-                      length: { within: 1..20 },
-                      presence: true
+  validates :username, exclusion: { 
+                         in: %w(admin superuser root goodbrews guest),
+                         message: 'is reserved'
+                       },
+                       format: {
+                         with: /\A\w+\Z/,
+                         message: 'can only contain letters, numbers, and underscores'
+                       },
+                       uniqueness: {
+                         case_sensitive: false,
+                         message: 'has already been taken'
+                       },
+                       length: { within: 1..20 },
+                       presence: true
 
-  validate :email, format: { with: /@/ },
-                   uniqueness: { 
-                     case_sensitive: false,
-                     message: 'is already in use'
-                   },
-                   presence: true
+  validates :email, format: { with: /@/ },
+                    uniqueness: { 
+                      case_sensitive: false,
+                      message: 'is already in use'
+                    },
+                    presence: true
 
   # I mean, I AM the only one right now.
   def admin?

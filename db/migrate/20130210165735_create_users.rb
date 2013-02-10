@@ -15,10 +15,10 @@ class CreateUsers < ActiveRecord::Migration
       t.string   :region
       t.string   :country
 
+      t.index :username, unique: true
+      t.index :email,    unique: true
+
       t.timestamps
     end
-
-    add_index :users, :username, unique: true
-    add_index :users, :email,    unique: true
   end
 end
