@@ -58,9 +58,5 @@ class UserTest < ActiveSupport::TestCase
       refute new_user.valid?
       assert_includes new_user.errors[:username], 'has already been taken'
     end
-
-    test 'must deliver a welcoming email' do
-      # TODO
-    end
   end
 end
