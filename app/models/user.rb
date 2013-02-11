@@ -4,7 +4,12 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   after_create { send_welcome_email }
 
-  validates :password, length: { minimum: 6, on: :create }
+  validates :password, length: { 
+                         minimum: 6,
+                         on: :create,
+                         message: 'must be longer than 6 characters'
+                       }
+  validates :password_confirmation, presence: { if: -> { password_digest_changed? }}
 
   validates :username, exclusion: { 
                          in: %w(admin superuser root goodbrews guest),
@@ -12,19 +17,24 @@ class User < ActiveRecord::Base
                        },
                        format: {
                          with: /\A\w+\Z/,
-                         message: 'can only contain letters, numbers, and underscores'
+                         message: 'can only contain letters, numbers, and underscores',
+                         allow_blank: true
                        },
                        uniqueness: {
                          case_sensitive: false,
                          message: 'has already been taken'
                        },
-                       length: { within: 1..20 },
+                       length: {
+                         within: 1..20,
+                         allow_blank: true
+                       },
                        presence: true
 
   validates :email, format: { with: /@/ },
                     uniqueness: { 
                       case_sensitive: false,
-                      message: 'is already in use'
+                      message: 'is already in use',
+                      unless: -> { email.blank? }
                     },
                     presence: true
 

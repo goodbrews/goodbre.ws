@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   private
 
     def current_user
-      @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
+      @current_user ||= User.where(:auth_token => cookies[:auth_token]).first if cookies[:auth_token]
     end
 
     def signed_in?

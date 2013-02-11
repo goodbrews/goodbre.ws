@@ -28,7 +28,4 @@ Goodbrews::Application.configure do
 
   # Debug mode disables concatenation and preprocessing of assets.
   config.assets.debug = true
-
-  # This must be explicitly set for less-rails
-  config.assets.enabled = true
 end

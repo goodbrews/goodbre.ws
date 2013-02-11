@@ -21,5 +21,13 @@ module Goodbrews
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # This must be explicitly set for less-rails
+    config.assets.enabled = true
+
+    # Skip fixtures when generating models.
+    config.generators do |g|
+      g.test_framework :mini_test, :fixture => false
+    end
   end
 end

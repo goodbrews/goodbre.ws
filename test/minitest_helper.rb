@@ -11,6 +11,11 @@ require 'minitest/rails/capybara'
 # Uncomment if you want awesome colorful output
 require 'minitest/pride'
 
+# Bring in the miniskirts.
+require 'factories'
+
 class ActiveSupport::TestCase
-  # Add more helper methods to be used by all tests here...
+  class << self
+    alias :context :describe
+  end
 end
