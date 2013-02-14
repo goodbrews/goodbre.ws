@@ -1,4 +1,6 @@
 class Brewery < ActiveRecord::Base
+  has_many :beers
+  
   before_create :set_permalink
 
   def to_param
