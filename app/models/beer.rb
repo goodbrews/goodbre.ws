@@ -1,6 +1,7 @@
 class Beer < ActiveRecord::Base
   include Permalinkable
 
+  has_and_belongs_to_many :ingredients
   has_many   :breweries
   belongs_to :style
 
