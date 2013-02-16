@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
                        },
                        format: {
                          with: /\A\w+\Z/,
-                         message: 'can only contain letters, numbers, and underscores',
+                         message: "can only contain letters, numbers, and '_'",
                          allow_blank: true
                        },
                        uniqueness: {

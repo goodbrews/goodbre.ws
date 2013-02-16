@@ -1,15 +1,10 @@
 class Beer < ActiveRecord::Base
-  has_many :breweries
+  include Permalinkable
 
-  before_create :set_permalink
+  has_many   :breweries
+  belongs_to :style
 
   def self.paginate(options = {})
     page(options[:page]).per(options[:per_page])
-  end
-
-  private
-
-  def set_permalink
-    self.permalink = self.name.parameterize
   end
 end
