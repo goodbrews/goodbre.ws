@@ -19,7 +19,6 @@ gem 'sinatra', :require => nil
 gem 'slim', '<= 1.3.0'
 
 gem 'jquery-rails'
-gem 'backbone-rails'
 gem 'twitter-bootstrap-rails', '~> 2.2.0'
 gem 'google-analytics-rails'
 gem 'turbolinks'
