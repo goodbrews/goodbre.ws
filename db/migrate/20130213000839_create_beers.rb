@@ -11,7 +11,7 @@ class CreateBeers < ActiveRecord::Migration
       t.boolean :organic
       t.float   :original_gravity
 
-      t.references :style
+      t.references :style, index: true
       t.string     :image_id, limit: 10
 
       t.index :permalink, unique: true
