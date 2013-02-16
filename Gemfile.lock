@@ -99,8 +99,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     atomic (1.0.1)
-    backbone-rails (0.9.9)
-      rails (>= 3.0.0)
     bcrypt-ruby (3.0.1)
     builder (3.1.4)
     capistrano (2.14.2)
@@ -288,7 +286,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord-deprecated_finders!
   arel!
-  backbone-rails
   bcrypt-ruby (~> 3.0.0)
   capistrano
   capistrano-maintenance
