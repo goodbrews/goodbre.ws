@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration
 
       t.string   :first_name
       t.string   :last_name
+
       t.string   :city
       t.string   :region
       t.string   :country

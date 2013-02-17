@@ -1,18 +1,15 @@
+Dir.glob(Rails.root.join('lib', 'routing_constraints', '*.rb')).each { |f| require f }
+
 Goodbrews::Application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  admin?     = signed_in? && lambda { |request| User.find_by_auth_token(request.cookies['auth_token']).admin? }
 
-  # You can have the root of your site routed with "root"
-  # root to: 'welcome#index'
+  root :to => 'dashboard#index', :constraints => SignedInConstraint.new(true)
+  root :to => 'pages#welcome',   :constraints => SignedInConstraint.new(false)
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+  constraints AdminConstraint.new do
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   # Example resource route with options:
   #   resources :products do
