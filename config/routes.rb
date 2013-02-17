@@ -1,21 +1,25 @@
 Dir.glob(Rails.root.join('lib', 'routing_constraints', '*.rb')).each { |f| require f }
 
 Goodbrews::Application.routes.draw do
-  admin?     = signed_in? && lambda { |request| User.find_by_auth_token(request.cookies['auth_token']).admin? }
-
-  root :to => 'dashboard#index', :constraints => SignedInConstraint.new(true)
-  root :to => 'pages#welcome',   :constraints => SignedInConstraint.new(false)
+  root to: 'dashboard#index', constraints: SignedInConstraint.new(true)
+  root to: 'pages#welcome',   constraints: SignedInConstraint.new(false)
 
   constraints AdminConstraint.new do
     require 'sidekiq/web'
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  resource :account, :controller => :account, :except => :show do
+  resource :account, controller: :account, except: :show do
     collection do
-      get  :sign_in, :controller  => :authentication, :action => :sign_in, :as => :sign_in
-      post :sign_in, :controller  => :authentication, :action => :authenticate, :as => :authenticate
-      post :sign_out, :controller => :authentication, :action => :sign_out, :as => :sign_out
+      get  :sign_in,  controller: :authentication, action: :sign_in,      as: :sign_in
+      post :sign_in,  controller: :authentication, action: :authenticate, as: :authenticate
+      post :sign_out, controller: :authentication, action: :sign_out,     as: :sign_out
+    end
+
+    resources :password_reset, only: [:new, :create, :update] do
+      member do
+        get '', action: :edit, as: :edit
+      end
     end
   end
 
