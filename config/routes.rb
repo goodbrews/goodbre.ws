@@ -11,6 +11,14 @@ Goodbrews::Application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  resource :account, :controller => :account, :except => :show do
+    collection do
+      get  :sign_in, :controller  => :authentication, :action => :sign_in, :as => :sign_in
+      post :sign_in, :controller  => :authentication, :action => :authenticate, :as => :authenticate
+      post :sign_out, :controller => :authentication, :action => :sign_out, :as => :sign_out
+    end
+  end
+
   # Example resource route with options:
   #   resources :products do
   #     member do

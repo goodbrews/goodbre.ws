@@ -1,9 +1,9 @@
 class AuthenticationController < ApplicationController
-  # GET /sign_in
+  # GET /account/sign_in
   def sign_in
   end
 
-  # POST /sign_in
+  # POST /account/sign_in
   def authenticate
     user = User.find_by_login(params[:login])
 
@@ -15,7 +15,7 @@ class AuthenticationController < ApplicationController
     end
   end
 
-  # POST /sign_out
+  # POST /account/sign_out
   def sign_out
     cookies.delete(:auth_token)
     redirect_to root_path
