@@ -9,6 +9,10 @@ Goodbrews::Application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  concern :searchable do
+    get :search, on: :collection
+  end
+
   resource :account, controller: :account, except: :show do
     collection do
       get  :sign_in,  controller: :authentication, action: :sign_in,      as: :sign_in
@@ -23,36 +27,56 @@ Goodbrews::Application.routes.draw do
     end
   end
 
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+  resource :dashboard, controller: :dashboard, only: [] do
+    collection do
+      get :likes
+      get :dislikes
+      get :fridge
+      get :hidden
+      get :similar
+    end
+  end
 
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
+  resources :users, only: :show, concerns: [:searchable] do
+    member do
+      get :likes
+      get :dislikes
+      get :fridge
+      get :similar
+    end
+  end
 
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
+  resources :beers, only: [:index, :show], concerns: [:searchable] do
+    member do
+      post   :like
+      delete :like,     action: :unlike,     as: :unlike
+      post   :dislike
+      delete :dislike,  action: :undislike,  as: :undislike
+      post   :hide
+      delete :hide,     action: :unhide,     as: :unhide
+      post   :bookmark
+      delete :bookmark, action: :unbookmark, as: :unbookmark
+    end
 
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+    get :search, on: :collection
+  end
+
+  resources :breweries, only: [:index, :show], concerns: [:searchable] do
+    resources :beers, only: [:index, :show]
+  end
+
+  resources :styles, only: [:index, :show] do
+    resources :beers, only: [:index, :show]
+  end
+
+  resources :events, only: [:index, :show]
+
+  resources :guilds, only: [:index, :show]
+
+  controller :pages do
+    get :welcome
+    get :about
+    get :privacy
+    get :terms
+  end
 end
