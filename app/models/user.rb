@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   after_create { send_welcome_email }
 
+  scope :by_login, -> login { where('username ILIKE ? OR email ILIKE ?', login, login).first }
+  scope :from_param, -> username { where(username: username)first }
+
   validates :password, length: { 
                          minimum: 6,
                          on: :create,
@@ -64,15 +67,9 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver
   end
 
-  def self.from_param(param)
-    where('username ILIKE ?', param).first
-  end
-
-  def self.find_by_login(login)
-    where('username ILIKE ? OR email ILIKE ?', login, login).first
-  end
-
-  def self.paginate(options = {})
-    page(options[:page]).per(options[:per_page])
+  class << self
+    def paginate(options = {})
+      page(options[:page]).per(options[:per_page])
+    end
   end
 end

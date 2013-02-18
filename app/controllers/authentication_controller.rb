@@ -5,7 +5,7 @@ class AuthenticationController < ApplicationController
 
   # POST /account/sign_in
   def authenticate
-    user = User.find_by_login(params[:login])
+    user = User.by_login(params[:login])
 
     if user && user.authenticate(params[:password])
       cookies.permanent[:auth_token] = user.auth_token

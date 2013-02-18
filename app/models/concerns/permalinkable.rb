@@ -3,13 +3,9 @@ module Permalinkable
 
   included do
     before_create :set_permalink
-    validates_uniqueness_of :permalink, case_sensitive: false
-  end
+    validates :permalink, uniqueness: { case_sensitive: false }
 
-  module ClassMethods
-    def from_param(param)
-      where(permalink: param).first
-    end
+    scope :from_param, -> { where(permalink: param).first }
   end
 
   def to_param

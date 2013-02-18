@@ -15,7 +15,7 @@ class BeersController < ApplicationController
   # GET /breweries/:brewery_id/beers/:id
   def show
     @brewery = Brewery.find(params[:brewery_id])
-    @beer = @brewery.beers.includes(:breweries, :style).find(params[:id])
+    @beer = @brewery.beers.includes(:breweries, :style).from_param(params[:id])
 
     # app/views/beers/show.html.haml
   end
