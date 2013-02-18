@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', :github => 'rails/rails'
-gem 'arel',  :github => 'rails/arel'
-gem 'activerecord-deprecated_finders', :github => 'rails/activerecord-deprecated_finders'
+gem 'rails', github: 'rails/rails'
+gem 'arel',  github: 'rails/arel'
+gem 'activerecord-deprecated_finders', github: 'rails/activerecord-deprecated_finders'
 
 gem 'puma'
 gem 'pg'
-gem 'haml'
+gem 'haml', github: 'haml/haml', branch: '4-0-stable'
 gem 'tire'
 
 gem 'recommendable', :github => 'davidcelis/recommendable'
@@ -36,9 +36,9 @@ group :assets do
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
   gem 'less-rails'
-  gem 'sprockets-rails', :github => 'rails/sprockets-rails'
-  gem 'sass-rails',      :github => 'rails/sass-rails'
-  gem 'coffee-rails',    :github => 'rails/coffee-rails'
+  gem 'sprockets-rails', github: 'rails/sprockets-rails'
+  gem 'sass-rails',      github: 'rails/sass-rails'
+  gem 'coffee-rails',    github: 'rails/coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', platforms: :ruby
@@ -54,5 +54,5 @@ group :development, :test do
   gem 'capistrano-maintenance'
   gem 'pry-rails'
   gem 'pry-coolline'
-  gem 'quiet_assets', :github => 'evrone/quiet_assets'
+  gem 'quiet_assets', github: 'evrone/quiet_assets'
 end
