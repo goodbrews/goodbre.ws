@@ -12,6 +12,11 @@ class BeersController < ApplicationController
     # app/views/beers/index.html.haml
   end
 
+  # GET /beers/search
+  def search
+    @beers = Beer.includes(:breweries, :style).search(params[:q])
+  end
+
   # GET /breweries/:brewery_id/beers/:id
   def show
     @brewery = Brewery.find(params[:brewery_id])
