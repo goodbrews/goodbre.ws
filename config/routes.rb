@@ -46,7 +46,7 @@ Goodbrews::Application.routes.draw do
     end
   end
 
-  resources :beers, only: [:index, :show], concerns: [:searchable] do
+  resources :beers, only: [:index], concerns: [:searchable] do
     member do
       post   :like
       delete :like,     action: :unlike,     as: :unlike
@@ -62,12 +62,10 @@ Goodbrews::Application.routes.draw do
   end
 
   resources :breweries, only: [:index, :show], concerns: [:searchable] do
-    resources :beers, only: [:index, :show]
+    resources :beers, only: [:show]
   end
 
-  resources :styles, only: [:index, :show] do
-    resources :beers, only: [:index, :show]
-  end
+  resources :styles, only: [:show]
 
   resources :events, only: [:index, :show]
 
