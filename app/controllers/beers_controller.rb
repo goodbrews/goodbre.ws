@@ -1,7 +1,7 @@
 class BeersController < ApplicationController
   RECOMMENDABLE_METHODS = %w[like unlike dislike undislike hide unhide bookmark unbookmark]
 
-  before_filter :ensure_signed_in!
+  before_filter :ensure_signed_in!, only: RECOMMENDABLE_METHODS
   respond_to :html, only: [:index, :show]
   respond_to :json, only: RECOMMENDABLE_METHODS
 
