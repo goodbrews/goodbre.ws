@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   after_create { send_welcome_email }
 
   scope :by_login, -> login { where('username ILIKE ? OR email ILIKE ?', login, login).first }
-  scope :from_param, -> username { where(username: username)first }
+  scope :from_param, -> username { find_by_username(username) }
 
   validates :password, length: { 
                          minimum: 6,

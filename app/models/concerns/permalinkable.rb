@@ -5,7 +5,7 @@ module Permalinkable
     before_create :set_permalink
     validates :permalink, uniqueness: { case_sensitive: false }
 
-    scope :from_param, -> { where(permalink: param).first }
+    scope :from_param, -> param { find_by_permalink(param) }
   end
 
   def to_param
