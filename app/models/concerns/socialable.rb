@@ -20,7 +20,7 @@ module Socialable
   def foursquare_url
     return '' if self.is_a?(Beer)
     account = social_media_accounts.where(website: 'Foursquare').first
-    account ? "http://foursquare.com/v/#{account.handle}"
+    account ? "http://foursquare.com/v/#{account.handle}" : ''
   end
 
   def untappd_url
