@@ -13,9 +13,11 @@ class CreateStyles < ActiveRecord::Migration
       t.integer :min_final_gravity
       t.integer :max_final_gravity
 
-      t.string  :permalink,   index: true
+      t.string  :permalink
 
       t.references :category, index: true
+
+      t.index :permalink, unique: true
 
       t.timestamps
     end

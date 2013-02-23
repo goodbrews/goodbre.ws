@@ -1,22 +1,21 @@
 class CreateGuilds < ActiveRecord::Migration
   def change
-    create_table :guilds, id: false do |t|
-      t.string :id, limit: 6
-
+    create_table :guilds do |t|
       t.string :name
       t.text   :description
       t.string :website
+
       t.string :image_id, limit: 6
+      t.string :brewerydb_id, limit: 6
 
       t.integer :established
+
+      t.index :brewerydb_id, unique: true
 
       t.timestamps
     end
 
-    create_table :breweries_guilds, id: false do |t|
-      t.string :brewery_id, limit: 6
-      t.string :guild_id,   limit: 6
-
+    create_join_table :breweries, :guilds do |t|
       t.index [:brewery_id, :guild_id], unique: true
     end
   end

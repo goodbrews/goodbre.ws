@@ -1,7 +1,6 @@
 class CreateBeers < ActiveRecord::Migration
   def change
-    create_table :beers, id: false do |t|
-      t.string  :id, limit: 6
+    create_table :beers do |t|
       t.string  :name
       t.float   :abv
       t.integer :ibu
@@ -11,22 +10,18 @@ class CreateBeers < ActiveRecord::Migration
       t.boolean :organic
       t.float   :original_gravity
 
-      t.references :style, index: true
-      t.string     :image_id, limit: 6
+      t.string     :brewerydb_id, limit: 6
+      t.string     :image_id,     limit: 6
+      t.references :style,        index: true
 
-      t.index :permalink, unique: true
-      t.index :abv
+      t.index :brewerydb_id,      unique: true
+      t.index :permalink,         unique: true
       t.index :organic
 
       t.timestamps
     end
 
-    execute 'ALTER TABLE beers ADD PRIMARY KEY (id);'
-
-    create_table :beers_breweries, id: false do |t|
-      t.string :beer_id,    limit: 6
-      t.string :brewery_id, limit: 6
-
+    create_join_table :beers, :breweries do |t|
       t.index [:beer_id, :brewery_id], unique: true
     end
   end

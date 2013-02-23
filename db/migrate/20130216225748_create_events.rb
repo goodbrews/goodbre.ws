@@ -1,8 +1,6 @@
 class CreateEvents < ActiveRecord::Migration
   def change
-    create_table :events, id: false do |t|
-      t.string :id, limit: 6
-
+    create_table :events do |t|
       t.string :name
       t.text   :description
       t.string :type
@@ -13,8 +11,6 @@ class CreateEvents < ActiveRecord::Migration
       t.date   :end_date
       t.string :hours
       t.string :price
-
-      t.string :image_id, limit: 6
 
       t.string :venue
       t.string :street
@@ -29,22 +25,18 @@ class CreateEvents < ActiveRecord::Migration
       t.string :website
       t.string :phone
 
+      t.string :image_id,     limit: 6
+      t.string :brewerydb_id, limit: 6
+      t.index  :brewerydb_id, unique: true
+
       t.timestamps
     end
 
-    execute 'ALTER TABLE events ADD PRIMARY KEY (id);'
-
-    create_table :beers_events, id: false do |t|
-      t.string :beer_id,  limit: 6
-      t.string :event_id, limit: 6
-
+    create_join_table :beers, :events do |t|
       t.index [:beer_id, :event_id], unique: true
     end
 
-    create_table :breweries_events, id: false do |t|
-      t.string :brewery_id, limit: 6
-      t.string :event_id,   limit: 6
-
+    create_join_table :breweries, :events do |t|
       t.index [:brewery_id, :event_id], unique: true
     end
   end

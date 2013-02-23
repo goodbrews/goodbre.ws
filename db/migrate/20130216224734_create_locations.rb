@@ -1,8 +1,6 @@
 class CreateLocations < ActiveRecord::Migration
   def change
-    create_table :locations, id: false do |t|
-      t.string :id, limit: 6
-
+    create_table :locations do |t|
       t.string :name
       t.string :type
 
@@ -23,11 +21,12 @@ class CreateLocations < ActiveRecord::Migration
       t.string :website
       t.string :phone
 
-      t.string :brewery_id, limit: 6, index: true
+      t.references :brewery,  index: true
+      t.string :brewerydb_id, limit: 6
+
+      t.index :brewerydb_id, unique: true
 
       t.timestamps
     end
-
-    execute 'ALTER TABLE locations ADD PRIMARY KEY (id);'
   end
 end
