@@ -5,6 +5,7 @@ class CreateBreweries < ActiveRecord::Migration
       t.text       :description
       t.string     :website
       t.boolean    :organic
+      t.integer    :established
 
       t.string     :permalink
       t.string     :image_id,     limit: 6

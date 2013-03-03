@@ -1,35 +1,17 @@
+# This endpoint has a withBreweries option; it should be run after the Brewery
+# endpoint so that we can link up breweries and beers with fewer API requests.
+
 module BreweryDB
   module Synchronizers
-    class Beer
-      def initializer
-        @client = BreweryDB::Client.new
-        @page = 1
-        @response = fetch_beers
-      end
-
-      def synchronize!
-        beers.each { |beer| update!(beer) } and next_page! while more_beers?
-      end
-
+    class Beer < Base
       private
-        def beers() @response['data'] end
-
-        def more_beers?
-          @page <= @response['numberOfPages']
-        end
-
-        def next_page!
-          @page += 1
-          @response = fetch_beers
-        end
-
-        def fetch_beers
-          @client.get('/beers', p: @page)
+        def fetch
+          @client.get('/beers', p: @page, withBreweries: 'Y')
         end
 
         def update!(attributes)
           beer = ::Beer.find_or_initialize_by(brewerydb_id: attributes['id'])
-          beer.update_attributes({
+          beer.assign_attributes({
             name:                attributes['name'],
             description:         attributes['description'],
             abv:                 attributes['abv'],
@@ -48,6 +30,13 @@ module BreweryDB
           if attributes['labels']
             beer.image_id = attributes['labels']['icon'].match(/upload_(\w+)-icon/)[0]
           end
+
+          beer.save!
+
+          # Update breweries
+          ids = attributes['breweries'].map(&:[], 'id')
+          breweries = ::Brewery.where(brewerydb_id: ids).pluck(:id).map(&:id)
+          beer.breweries = breweries
 
           beer.save!
         end
