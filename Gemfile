@@ -52,6 +52,7 @@ group :development, :test do
   gem 'capistrano'
   gem 'capistrano-maintenance'
   gem 'pry-rails'
+  gem 'coolline', github: 'Mon-Ouie/coolline'
   gem 'pry-coolline', github: 'pry/pry-coolline'
   gem 'quiet_assets', github: 'evrone/quiet_assets'
 end

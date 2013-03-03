@@ -9,6 +9,8 @@ class CreateBeers < ActiveRecord::Migration
       t.string  :glassware
       t.boolean :organic
       t.float   :original_gravity
+      t.float   :serving_temperature
+      t.string  :permalink
 
       t.string     :brewerydb_id, limit: 6
       t.string     :image_id,     limit: 6

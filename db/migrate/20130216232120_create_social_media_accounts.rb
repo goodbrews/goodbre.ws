@@ -7,7 +7,7 @@ class CreateSocialMediaAccounts < ActiveRecord::Migration
       t.string :socialable_id, limit: 6
       t.string :socialable_type
 
-      t.index [:socialable_id, :socialable_type], unique: true
+      t.index [:socialable_id, :socialable_type], unique: true, name: 'index_social_media_accounts_on_id_and_type'
 
       t.timestamps
     end

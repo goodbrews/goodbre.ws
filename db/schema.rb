@@ -11,24 +11,201 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130210205639) do
+ActiveRecord::Schema.define(version: 20130216232120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "breweries", id: false, force: true do |t|
-    t.string   "id",          limit: 10, null: false
+  create_table "alternate_names", force: true do |t|
+    t.integer  "brewery_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alternate_names", ["brewery_id"], name: "index_alternate_names_on_brewery_id"
+
+  create_table "beers", force: true do |t|
+    t.string   "name"
+    t.float    "abv"
+    t.integer  "ibu"
+    t.text     "description"
+    t.string   "availability"
+    t.string   "glassware"
+    t.boolean  "organic"
+    t.float    "original_gravity"
+    t.float    "serving_temperature"
+    t.string   "permalink"
+    t.string   "brewerydb_id",        limit: 6
+    t.string   "image_id",            limit: 6
+    t.integer  "style_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "beers", ["brewerydb_id"], name: "index_beers_on_brewerydb_id", unique: true
+  add_index "beers", ["organic"], name: "index_beers_on_organic"
+  add_index "beers", ["permalink"], name: "index_beers_on_permalink", unique: true
+  add_index "beers", ["style_id"], name: "index_beers_on_style_id"
+
+  create_table "beers_breweries", id: false, force: true do |t|
+    t.integer "beer_id",    null: false
+    t.integer "brewery_id", null: false
+  end
+
+  add_index "beers_breweries", ["beer_id", "brewery_id"], name: "index_beers_breweries_on_beer_id_and_brewery_id", unique: true
+
+  create_table "beers_events", id: false, force: true do |t|
+    t.integer "beer_id",  null: false
+    t.integer "event_id", null: false
+  end
+
+  add_index "beers_events", ["beer_id", "event_id"], name: "index_beers_events_on_beer_id_and_event_id", unique: true
+
+  create_table "beers_ingredients", id: false, force: true do |t|
+    t.integer "beer_id",       null: false
+    t.integer "ingredient_id", null: false
+  end
+
+  add_index "beers_ingredients", ["beer_id", "ingredient_id"], name: "index_beers_ingredients_on_beer_id_and_ingredient_id", unique: true
+
+  create_table "breweries", force: true do |t|
     t.string   "name"
     t.text     "description"
     t.string   "website"
     t.boolean  "organic"
     t.string   "permalink"
-    t.string   "image_id",    limit: 10
+    t.string   "image_id",     limit: 6
+    t.string   "brewerydb_id", limit: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "breweries", ["brewerydb_id"], name: "index_breweries_on_brewerydb_id", unique: true
   add_index "breweries", ["permalink"], name: "index_breweries_on_permalink", unique: true
+
+  create_table "breweries_events", id: false, force: true do |t|
+    t.integer "brewery_id", null: false
+    t.integer "event_id",   null: false
+  end
+
+  add_index "breweries_events", ["brewery_id", "event_id"], name: "index_breweries_events_on_brewery_id_and_event_id", unique: true
+
+  create_table "breweries_guilds", id: false, force: true do |t|
+    t.integer "brewery_id", null: false
+    t.integer "guild_id",   null: false
+  end
+
+  add_index "breweries_guilds", ["brewery_id", "guild_id"], name: "index_breweries_guilds_on_brewery_id_and_guild_id", unique: true
+
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "type"
+    t.integer  "year"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "hours"
+    t.string   "price"
+    t.string   "venue"
+    t.string   "street"
+    t.string   "city"
+    t.string   "region"
+    t.string   "postal_code"
+    t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "website"
+    t.string   "phone"
+    t.string   "image_id",     limit: 6
+    t.string   "brewerydb_id", limit: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["brewerydb_id"], name: "index_events_on_brewerydb_id", unique: true
+
+  create_table "guilds", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "website"
+    t.string   "image_id",     limit: 6
+    t.string   "brewerydb_id", limit: 6
+    t.integer  "established"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "guilds", ["brewerydb_id"], name: "index_guilds_on_brewerydb_id", unique: true
+
+  create_table "ingredients", force: true do |t|
+    t.string   "name"
+    t.string   "category"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locations", force: true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.boolean  "primary"
+    t.boolean  "in_planning"
+    t.boolean  "public"
+    t.boolean  "closed"
+    t.string   "street"
+    t.string   "city"
+    t.string   "region"
+    t.string   "postal_code"
+    t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "website"
+    t.string   "phone"
+    t.integer  "brewery_id"
+    t.string   "brewerydb_id", limit: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "locations", ["brewery_id"], name: "index_locations_on_brewery_id"
+  add_index "locations", ["brewerydb_id"], name: "index_locations_on_brewerydb_id", unique: true
+
+  create_table "social_media_accounts", force: true do |t|
+    t.string   "site"
+    t.string   "handle"
+    t.string   "socialable_id",   limit: 6
+    t.string   "socialable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "social_media_accounts", ["socialable_id", "socialable_type"], name: "index_social_media_accounts_on_id_and_type", unique: true
+
+  create_table "styles", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.float    "min_abv"
+    t.float    "max_abv"
+    t.integer  "min_ibu"
+    t.integer  "max_ibu"
+    t.integer  "min_original_gravity"
+    t.integer  "max_original_gravity"
+    t.integer  "min_final_gravity"
+    t.integer  "max_final_gravity"
+    t.string   "permalink"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "styles", ["category_id"], name: "index_styles_on_category_id"
+  add_index "styles", ["permalink"], name: "index_styles_on_permalink", unique: true
 
   create_table "users", force: true do |t|
     t.string   "email",                  null: false
@@ -37,8 +214,7 @@ ActiveRecord::Schema.define(version: 20130210205639) do
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "name"
     t.string   "city"
     t.string   "region"
     t.string   "country"

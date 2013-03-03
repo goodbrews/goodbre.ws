@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/Mon-Ouie/coolline.git
+  revision: 66c07cd14af80a1f1698633fbadf7eb8f8e562a9
+  specs:
+    coolline (0.4.0)
+
+GIT
   remote: git://github.com/davidcelis/recommendable.git
   revision: 7f7e9805b926d594e91082f68c741293e6ccdf69
   specs:
@@ -143,7 +149,6 @@ GEM
     coffee-script-source (1.5.0)
     commonjs (0.2.6)
     connection_pool (1.0.0)
-    coolline (0.4.0)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -298,6 +303,7 @@ DEPENDENCIES
   capistrano
   capistrano-maintenance
   coffee-rails!
+  coolline!
   google-analytics-rails
   gravatar_image_tag
   haml!
