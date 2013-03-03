@@ -32,7 +32,6 @@ gem 'newrelic-redis'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'font-awesome-rails'
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
   gem 'less-rails'
@@ -53,6 +52,6 @@ group :development, :test do
   gem 'capistrano'
   gem 'capistrano-maintenance'
   gem 'pry-rails'
-  gem 'pry-coolline'
+  gem 'pry-coolline', github: 'pry/pry-coolline'
   gem 'quiet_assets', github: 'evrone/quiet_assets'
 end
