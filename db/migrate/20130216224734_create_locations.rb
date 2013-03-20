@@ -10,6 +10,7 @@ class CreateLocations < ActiveRecord::Migration
       t.boolean :closed
 
       t.string :street
+      t.string :street2
       t.string :city
       t.string :region
       t.string :postal_code
@@ -18,6 +19,7 @@ class CreateLocations < ActiveRecord::Migration
       t.float :latitude
       t.float :longitude
 
+      t.string :hours
       t.string :website
       t.string :phone
 

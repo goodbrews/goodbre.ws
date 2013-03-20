@@ -4,8 +4,7 @@ class CreateSocialMediaAccounts < ActiveRecord::Migration
       t.string :site
       t.string :handle
 
-      t.string :socialable_id, limit: 6
-      t.string :socialable_type
+      t.references :socialable, polymorphic: true
 
       t.index [:socialable_id, :socialable_type], unique: true, name: 'index_social_media_accounts_on_id_and_type'
 

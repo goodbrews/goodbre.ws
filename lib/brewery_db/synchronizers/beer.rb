@@ -6,7 +6,13 @@ module BreweryDB
     class Beer < Base
       private
         def fetch
-          @client.get('/beers', p: @page, withBreweries: 'Y')
+          params = {
+            p: @page,
+            withBreweries: 'Y',
+            withSocialAccounts: 'Y',
+            withIngredients: 'Y'
+          }
+          @client.get('/beers', params)
         end
 
         def update!(attributes)
@@ -17,11 +23,12 @@ module BreweryDB
             abv:                 attributes['abv'],
             ibu:                 attributes['ibu'],
             original_gravity:    attributes['originalGravity'],
-            style_id:            attributes['styleId'],
-            organic:             attributes['isOrganic'] == 'Y' ? true : false,
+            organic:             attributes['isOrganic'] == 'Y',
             serving_temperature: attributes['servingTemperatureDisplay'],
             availability:        attributes['available'].try(:[], 'name'),
             glassware:           attributes['glass'].try(:[], 'name'),
+
+            style_id:            attributes['styleId'],
 
             created_at:          attributes['createDate'],
             updated_at:          attributes['updateDate']
@@ -33,10 +40,16 @@ module BreweryDB
 
           beer.save!
 
-          # Update breweries
-          ids = attributes['breweries'].map(&:[], 'id')
-          breweries = ::Brewery.where(brewerydb_id: ids).pluck(:id).map(&:id)
-          beer.breweries = breweries
+          # Handle Social Accounts
+          Array(attributes['socialAccounts']).each do |social_attributes|
+            social_account = beer.social_media_accounts.find_or_initialize_by(website: social_attributes['socialMedia']['name'])
+            social_account.assign_attributes({
+              handle:     social_attributes['handle'],
+              created_at: social_attributes['createDate']
+            })
+
+            social_account.save!
+          end
 
           beer.save!
         end
