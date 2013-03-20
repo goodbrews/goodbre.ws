@@ -14,6 +14,7 @@ class CreateEvents < ActiveRecord::Migration
 
       t.string :venue
       t.string :street
+      t.string :street2
       t.string :city
       t.string :region
       t.string :postal_code
