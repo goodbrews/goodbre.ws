@@ -4,7 +4,7 @@
 module BreweryDB
   module Synchronizers
     class Beer < Base
-      private
+      protected
         def fetch
           params = {
             p: @page,

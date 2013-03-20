@@ -4,18 +4,18 @@ module BreweryDB
       def initializer
         @client = BreweryDB::Client.new
         @page = 1
-        @response = fetch_objects
+        @response = fetch
       end
 
       def synchronize!
         objects.each { |obj| update!(obj) } and next_page! while more_objects?
       end
 
-      private
+      protected
         def objects() @response['data'] end
 
         def more_objects?
-          @page <= @response['numberOfPages']
+          @response['numberOfPages'] && @page <= @response['numberOfPages']
         end
 
         def next_page!
