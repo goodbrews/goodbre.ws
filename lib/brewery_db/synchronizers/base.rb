@@ -1,10 +1,11 @@
 module BreweryDB
   module Synchronizers
     class Base
-      def initializer
+      def initialize
         @client = BreweryDB::Client.new
         @page = 1
         @response = fetch
+        @pages = @response.body['numberOfPages'] || 1
       end
 
       def synchronize!
@@ -12,15 +13,16 @@ module BreweryDB
       end
 
       protected
-        def objects() @response['data'] end
+        def objects() @response.body['data'] end
 
         def more_objects?
-          @response['numberOfPages'] && @page <= @response['numberOfPages']
+          @page <= @pages
         end
 
         def next_page!
           @page += 1
-          @response = fetch
+          @response = fetch unless @page > @pages
+          true
         end
 
         def fetch

@@ -16,15 +16,6 @@ ActiveRecord::Schema.define(version: 20130216232120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "alternate_names", force: true do |t|
-    t.integer  "brewery_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "alternate_names", ["brewery_id"], name: "index_alternate_names_on_brewery_id"
-
   create_table "beers", force: true do |t|
     t.string   "name"
     t.float    "abv"
@@ -71,12 +62,14 @@ ActiveRecord::Schema.define(version: 20130216232120) do
 
   create_table "breweries", force: true do |t|
     t.string   "name"
+    t.string   "alternate_name"
     t.text     "description"
     t.string   "website"
     t.boolean  "organic"
+    t.integer  "established"
     t.string   "permalink"
-    t.string   "image_id",     limit: 6
-    t.string   "brewerydb_id", limit: 6
+    t.string   "image_id",       limit: 6
+    t.string   "brewerydb_id",   limit: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -97,12 +90,6 @@ ActiveRecord::Schema.define(version: 20130216232120) do
   end
 
   add_index "breweries_guilds", ["brewery_id", "guild_id"], name: "index_breweries_guilds_on_brewery_id_and_guild_id", unique: true
-
-  create_table "categories", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -159,12 +146,14 @@ ActiveRecord::Schema.define(version: 20130216232120) do
     t.boolean  "public"
     t.boolean  "closed"
     t.string   "street"
+    t.string   "street2"
     t.string   "city"
     t.string   "region"
     t.string   "postal_code"
     t.string   "country"
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "hours"
     t.string   "website"
     t.string   "phone"
     t.integer  "brewery_id"
@@ -179,7 +168,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
   create_table "social_media_accounts", force: true do |t|
     t.string   "site"
     t.string   "handle"
-    t.string   "socialable_id",   limit: 6
+    t.integer  "socialable_id"
     t.string   "socialable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -189,6 +178,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
 
   create_table "styles", force: true do |t|
     t.string   "name"
+    t.string   "category"
     t.text     "description"
     t.float    "min_abv"
     t.float    "max_abv"

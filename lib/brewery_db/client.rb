@@ -37,7 +37,9 @@ module BreweryDB
     BASE_PATH = '/v2'
     PORT = 80
 
-    def initialize(@api_key = ENV['BREWERYDB_API_KEY']) end
+    def initialize()
+      @api_key = ENV['BREWERYDB_API_KEY']
+    end
 
     def get(path, params = {}, options = {})
       request :get, path, options.merge(:params => params)
