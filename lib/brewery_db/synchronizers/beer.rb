@@ -38,17 +38,25 @@ module BreweryDB
             beer.image_id = attributes['labels']['icon'].match(/upload_(\w+)-icon/)[0]
           end
 
-          beer.save!
+          # Assign Brewery
+          beer.breweries = attributes['breweries'].map do |brewery|
+            ::Brewery.find_by_brewerydb_id(brewery['id'])
+          end
 
           # Handle Social Accounts
-          Array(attributes['socialAccounts']).each do |social_attributes|
-            social_account = beer.social_media_accounts.find_or_initialize_by(website: social_attributes['socialMedia']['name'])
+          Array(attributes['socialAccounts']).each do |account|
+            social_account = beer.social_media_accounts.find_or_initialize_by(website: account['socialMedia']['name'])
             social_account.assign_attributes({
-              handle:     social_attributes['handle'],
-              created_at: social_attributes['createDate']
+              handle:     account['handle'],
+              created_at: account['createDate']
             })
 
             social_account.save!
+          end
+
+          # Handle Ingredients
+          beer.ingredients = Array(attributes['ingredients']).map do |ingredient|
+            ::Ingredient.find(ingredient['id'])
           end
 
           beer.save!
