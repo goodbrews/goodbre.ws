@@ -28,20 +28,24 @@ module BreweryDB
             availability:        attributes['available'].try(:[], 'name'),
             glassware:           attributes['glass'].try(:[], 'name'),
 
-            style_id:            attributes['styleId'],
-
             created_at:          attributes['createDate'],
             updated_at:          attributes['updateDate']
           })
           
           if attributes['labels']
-            beer.image_id = attributes['labels']['icon'].match(/upload_(\w+)-icon/)[0]
+            beer.image_id = attributes['labels']['icon'].match(/upload_(\w+)-icon/)[1]
           end
 
-          # Assign Brewery
-          beer.breweries = attributes['breweries'].map do |brewery|
-            ::Brewery.find_by_brewerydb_id(brewery['id'])
+          beer.save!
+
+          # Assign Breweries
+          breweries = Array(attributes['breweries']).map do |brewery|
+            ::Brewery.find_by(brewerydb_id: brewery['id'])
           end
+          beer.breweries = breweries.compact.uniq
+
+          # Assign Style
+          beer.style = ::Style.find(attributes['styleId']) if attributes['styleId']
 
           # Handle Social Accounts
           Array(attributes['socialAccounts']).each do |account|
@@ -55,8 +59,10 @@ module BreweryDB
           end
 
           # Handle Ingredients
-          beer.ingredients = Array(attributes['ingredients']).map do |ingredient|
-            ::Ingredient.find(ingredient['id'])
+          if attributes['ingredients']
+            beer.ingredients = attributes['ingredients'].flat_map { |_, i| i }.map do |ingredient|
+              ::Ingredient.find(ingredient['id'])
+            end
           end
 
           beer.save!

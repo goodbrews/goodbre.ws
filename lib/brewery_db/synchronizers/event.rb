@@ -15,7 +15,7 @@ module BreweryDB
             name:        attributes['name'],
             year:        attributes['year'],
             description: attributes['description'],
-            type:        attributes['typeDisplay'],
+            category:    attributes['typeDisplay'],
 
             start_date:  attributes['startDate'],
             end_date:    attributes['endDate'],
@@ -41,9 +41,10 @@ module BreweryDB
           })
 
           if attributes['images']
-            event.image_id = attributes['images']['icon'].match(/upload_(\w+)-icon/)[0]
+            event.image_id = attributes['images']['icon'].match(/upload_(\w+)-icon/)[1]
+          end
 
-          style.save!
+          event.save!
         end
     end
   end

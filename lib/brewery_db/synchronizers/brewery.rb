@@ -5,7 +5,6 @@ module BreweryDB
         def fetch
           params = {
             p: @page,
-            withLocations: 'Y',
             withSocialAccounts: 'Y',
             withGuilds: 'Y',
             withAlternateNames: 'Y'
@@ -28,19 +27,22 @@ module BreweryDB
           })
           
           if attributes['images']
-            brewery.image_id = attributes['labels']['icon'].match(/upload_(\w+)-icon/)[0]
+            brewery.image_id = attributes['images']['icon'].match(/upload_(\w+)-icon/)[1]
           end
 
           if attributes['alternateNames']
             brewery.alternate_name = attributes['alternateNames'].first['altName']
           end
 
+          brewery.save!
+
           # Handle social accounts
           Array(attributes['socialAccounts']).each do |account|
             social_account = brewery.social_media_accounts.find_or_initialize_by(website: account['socialMedia']['name'])
             social_account.assign_attributes({
               handle:     account['handle'],
-              created_at: account['createDate']
+              created_at: account['createDate'],
+              updated_at: account['updateDate']
             })
 
             social_account.save!

@@ -2,7 +2,7 @@ class CreateLocations < ActiveRecord::Migration
   def change
     create_table :locations do |t|
       t.string :name
-      t.string :type
+      t.string :category
 
       t.boolean :primary
       t.boolean :in_planning
@@ -19,7 +19,7 @@ class CreateLocations < ActiveRecord::Migration
       t.float :latitude
       t.float :longitude
 
-      t.string :hours
+      t.text  :hours
       t.string :website
       t.string :phone
 

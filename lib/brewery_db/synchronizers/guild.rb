@@ -26,8 +26,8 @@ module BreweryDB
             updated_at:  attributes['updateDate']
           })
 
-          if guild_attributes['images']
-            guild.image_id = guild_attributes['images']['icon'].match(/upload_(\w+)-icon/)[0]
+          if attributes['images']
+            guild.image_id = attributes['images']['icon'].match(/upload_(\w+)-icon/)[1]
           end
 
           guild.save!

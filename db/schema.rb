@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
   create_table "events", force: true do |t|
     t.string   "name"
     t.text     "description"
-    t.string   "type"
+    t.string   "category"
     t.integer  "year"
     t.date     "start_date"
     t.date     "end_date"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
     t.string   "price"
     t.string   "venue"
     t.string   "street"
+    t.string   "street2"
     t.string   "city"
     t.string   "region"
     t.string   "postal_code"
@@ -140,7 +141,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
 
   create_table "locations", force: true do |t|
     t.string   "name"
-    t.string   "type"
+    t.string   "category"
     t.boolean  "primary"
     t.boolean  "in_planning"
     t.boolean  "public"
@@ -153,7 +154,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
     t.string   "country"
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "hours"
+    t.text     "hours"
     t.string   "website"
     t.string   "phone"
     t.integer  "brewery_id"
@@ -166,7 +167,7 @@ ActiveRecord::Schema.define(version: 20130216232120) do
   add_index "locations", ["brewerydb_id"], name: "index_locations_on_brewerydb_id", unique: true
 
   create_table "social_media_accounts", force: true do |t|
-    t.string   "site"
+    t.string   "website"
     t.string   "handle"
     t.integer  "socialable_id"
     t.string   "socialable_type"
@@ -174,7 +175,8 @@ ActiveRecord::Schema.define(version: 20130216232120) do
     t.datetime "updated_at"
   end
 
-  add_index "social_media_accounts", ["socialable_id", "socialable_type"], name: "index_social_media_accounts_on_id_and_type", unique: true
+  add_index "social_media_accounts", ["socialable_id", "socialable_type", "website"], name: "index_unique_social_media_accounts", unique: true
+  add_index "social_media_accounts", ["socialable_id", "socialable_type"], name: "index_social_media_accounts_on_id_and_type"
 
   create_table "styles", force: true do |t|
     t.string   "name"

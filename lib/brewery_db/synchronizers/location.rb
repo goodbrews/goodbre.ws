@@ -10,7 +10,7 @@ module BreweryDB
           location = ::Location.find_or_initialize_by(brewerydb_id: attributes['id'])
           location.assign_attributes({
             name:        attributes['name'],
-            type:        attributes['locationTypeDisplay'],
+            category:    attributes['locationTypeDisplay'],
             primary:     attributes['isPrimary'] == 'Y',
             in_planning: attributes['inPlanning'] == 'Y',
             public:      attributes['openToPublic'] == 'Y',

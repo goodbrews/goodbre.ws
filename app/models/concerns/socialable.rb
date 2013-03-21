@@ -51,13 +51,4 @@ module Socialable
       "http://www.beeradvocate.com/beer/profile/#{account.handle}"
     end
   end
-
-  def to_param
-    self.permalink
-  end
-
-  private
-    def set_permalink
-      self.permalink = self.name
-    end
 end

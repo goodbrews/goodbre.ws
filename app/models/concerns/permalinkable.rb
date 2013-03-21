@@ -14,6 +14,11 @@ module Permalinkable
 
   private
     def set_permalink
-      self.permalink = self.name
+      number = 1
+      begin
+        self.permalink = self.name.parameterize
+        self.permalink += "-#{number}" if number > 1
+        number += 1
+      end while self.class.where(permalink: self.permalink).exists?
     end
 end

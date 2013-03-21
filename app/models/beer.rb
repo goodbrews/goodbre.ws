@@ -3,7 +3,7 @@ class Beer < ActiveRecord::Base
   include Socialable
 
   has_and_belongs_to_many :ingredients
-  has_many   :breweries
+  has_and_belongs_to_many :breweries
   belongs_to :style
 
   def self.paginate(options = {})
