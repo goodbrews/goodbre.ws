@@ -1,18 +1,20 @@
 class User < ActiveRecord::Base
-  # has_secure_password
+  has_secure_password
+
+  recommends :beers
 
   before_create { generate_token(:auth_token) }
-  # after_create { send_welcome_email }
+  after_create { send_welcome_email }
 
   scope :by_login, -> login { where('username ILIKE ? OR email ILIKE ?', login, login).first }
   scope :from_param, -> username { find_by_username(username) }
 
-  # validates :password, length: { 
-  #                        minimum: 6,
-  #                        on: :create,
-  #                        message: 'must be longer than 6 characters'
-  #                      }
-  # validates :password_confirmation, presence: { if: -> { password_digest_changed? }}
+  validates :password, length: {
+                         minimum: 6,
+                         on: :create,
+                         message: 'must be longer than 6 characters'
+                       }
+  validates :password_confirmation, presence: { if: -> { password_digest_changed? }}
 
   validates :username, exclusion: { 
                          in: %w(admin superuser root goodbrews guest),
