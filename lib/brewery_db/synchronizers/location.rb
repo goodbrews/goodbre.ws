@@ -1,13 +1,26 @@
 module BreweryDB
   module Synchronizers
     class Location < Base
+      def handle_removed!
+        ::Location.find_each do |location|
+          response = @client.get("/location/#{location.brewerydb_id}")
+
+          if response.body['data']['status'] == 'deleted'
+            puts "Deleted location: #{location.name}"
+            location.destroy
+          end
+        end
+      end
+
       protected
-        def fetch
-          @client.get('/locations', p: @page)
+        def fetch(options = {})
+          params = { p: @page }.merge(options)
+          @client.get('/locations', params)
         end
 
         def update!(attributes)
           location = ::Location.find_or_initialize_by(brewerydb_id: attributes['id'])
+
           location.assign_attributes({
             name:        attributes['name'],
             category:    attributes['locationTypeDisplay'],
@@ -37,7 +50,20 @@ module BreweryDB
           # Associate Brewery
           location.brewery = ::Brewery.find_by_brewerydb_id(attributes['breweryId'])
 
+          if location.new_record?
+            puts "New location: #{location.name} (for #{location.brewery.name})"
+          end
+
           location.save!
+        end
+
+        def destroy!(attributes)
+          location = ::Location.find_by(brewerydb_id: attributes['id'])
+
+          if location.present?
+            puts "Deleted location: #{location.name}"
+            location.destroy
+          end
         end
     end
   end

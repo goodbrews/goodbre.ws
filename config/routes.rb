@@ -1,8 +1,8 @@
-Dir.glob(Rails.root.join('lib', 'routing_constraints', '*.rb')).each { |f| require f }
+Dir[Rails.root.join('lib', 'routing_constraints', '*.rb')].each { |f| require f }
 
 Goodbrews::Application.routes.draw do
   root to: 'dashboard#index', constraints: SignedInConstraint.new(true)
-  root to: 'pages#welcome',   constraints: SignedInConstraint.new(false)
+  root to: 'pages#welcome',   constraints: SignedInConstraint.new(false), as: :signed_out_root
 
   constraints AdminConstraint.new do
     require 'sidekiq/web'

@@ -9,33 +9,22 @@ require 'brewery_db/synchronizers/location'
 require 'brewery_db/synchronizers/style'
 
 namespace :brewery_db do
-  task :synchronize => :environment do
-    # puts "Synchronizing ingredients..."
-    # ingredients = BreweryDB::Synchronizers::Ingredient.new
-    # ingredients.synchronize!
+  namespace :synchronize do
+    things = %w[ingredients events guilds breweries styles beers locations].map(&:to_sym)
 
-    # puts "Synchronizing events..."
-    # events = BreweryDB::Synchronizers::Event.new
-    # events.synchronize!
+    things.each do |thing|
+      desc "Synchronizes #{thing} with BreweryDB's data. Adds, updates, and removes as necessary."
+      task thing => :environment do
+        puts "Synchronizing #{thing}..."
+        klass = "brewery_d_b/synchronizers/#{thing}".classify.constantize
 
-    # puts "Synchronizing guilds..."
-    # guilds = BreweryDB::Synchronizers::Guild.new
-    # guilds.synchronize!
+        synchronizer = klass.new
+        synchronizer.synchronize!
+        synchronizer.handle_removed! unless thing.in?([:ingredients, :styles])
+      end
+    end
 
-    # puts "Synchronizing breweries..."
-    # breweries = BreweryDB::Synchronizers::Brewery.new
-    # breweries.synchronize!
-
-    # puts "Synchronizing styles..."
-    # styles = BreweryDB::Synchronizers::Style.new
-    # styles.synchronize!
-
-    # puts "Synchronizing beers..."
-    # beers = BreweryDB::Synchronizers::Beer.new
-    # beers.synchronize!
-
-    puts "Synchronizing locations..."
-    locations = BreweryDB::Synchronizers::Location.new
-    locations.synchronize!
+    desc 'Synchronizes all data with BreweryDB. Adds, updates, and removes as necessary.'
+    task :all => things
   end
 end

@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
                        }
   validates :password_confirmation, presence: { if: -> { password_digest_changed? }}
 
-  validates :username, exclusion: { 
+  validates :username, exclusion: {
                          in: %w(admin superuser root goodbrews guest),
                          message: 'is reserved'
                        },
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
                        presence: true
 
   validates :email, format: { with: /@/ },
-                    uniqueness: { 
+                    uniqueness: {
                       case_sensitive: false,
                       message: 'is already in use',
                       unless: -> { email.blank? }

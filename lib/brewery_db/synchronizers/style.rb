@@ -5,7 +5,7 @@ module BreweryDB
   module Synchronizers
     class Style < Base
       protected
-        def fetch
+        def fetch(options = {})
           @client.get('/styles')
         end
 
@@ -28,6 +28,10 @@ module BreweryDB
             created_at:  attributes['createDate'],
             updated_at:  attributes['updateDate']
           })
+
+          if style.new_record?
+            puts "New style: #{style.name}"
+          end
 
           style.save!
         end

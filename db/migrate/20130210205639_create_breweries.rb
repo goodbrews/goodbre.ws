@@ -2,7 +2,7 @@ class CreateBreweries < ActiveRecord::Migration
   def change
     create_table :breweries do |t|
       t.string     :name
-      t.string     :alternate_name
+      t.string     :alternate_names, array: true
       t.text       :description
       t.string     :website
       t.boolean    :organic

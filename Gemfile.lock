@@ -37,13 +37,13 @@ GIT
 
 GIT
   remote: git://github.com/rails/activerecord-deprecated_finders.git
-  revision: c00788c2b7e01170f63bd9651f7efd8deb4bd4b0
+  revision: 46aa99efc9c3c1db1d4f2e55373481212e6b2e26
   specs:
     activerecord-deprecated_finders (0.0.3)
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: 933ea218116645eafaf3b7ea5695520db0f9d9ba
+  revision: 8c21663f655b9a67069c03094e5da2dc8a674eb3
   specs:
     arel (4.0.0.beta2.20130314230643)
 
@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: ecfdc842a58816540e7c96a913f95a0d94be7ca7
+  revision: 130d3a06ade83aec27cf1d2ff841dce9e0ad4dfd
   specs:
     actionmailer (4.0.0.beta1)
       actionpack (= 4.0.0.beta1)
@@ -81,7 +81,7 @@ GIT
       minitest (~> 4.2)
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
-      tzinfo (~> 0.3.33)
+      tzinfo (~> 0.3.37)
     rails (4.0.0.beta1)
       actionmailer (= 4.0.0.beta1)
       actionpack (= 4.0.0.beta1)
@@ -94,8 +94,7 @@ GIT
       actionpack (= 4.0.0.beta1)
       activesupport (= 4.0.0.beta1)
       rake (>= 0.8.7)
-      rdoc (~> 3.4)
-      thor (>= 0.17.0, < 2.0)
+      thor (>= 0.18.1, < 2.0)
 
 GIT
   remote: git://github.com/rails/sass-rails.git
@@ -109,7 +108,7 @@ GIT
 
 GIT
   remote: git://github.com/rails/sprockets-rails.git
-  revision: afce1e65f7c6df4ae96522b26e755915d238ff80
+  revision: 16082178a15ce50270ec2250ad202379fa882079
   specs:
     sprockets-rails (2.0.0.rc3)
       actionpack (>= 3.0)
@@ -119,7 +118,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    atomic (1.0.1)
+    atomic (1.1.7)
     bcrypt-ruby (3.0.1)
     builder (3.1.4)
     capistrano (2.14.2)
@@ -158,13 +157,12 @@ GEM
     gravatar_image_tag (1.1.3)
     hashr (0.0.22)
     highline (1.6.16)
-    hike (1.2.1)
+    hike (1.2.2)
     hooks (0.2.2)
     i18n (0.6.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    json (1.7.7)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -179,10 +177,10 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.1)
-    mime-types (1.21)
+    mime-types (1.22)
     miniskirt (1.2.1)
       activesupport
-    minitest (4.7.0)
+    minitest (4.7.1)
     minitest-capybara (0.1.0)
       capybara (>= 1.0)
       minitest-matchers (>= 1.2)
@@ -199,7 +197,7 @@ GEM
       minitest-matchers (~> 1.2)
       minitest-metadata (~> 0.3)
       minitest-rails (~> 0.9.1)
-    multi_json (1.7.1)
+    multi_json (1.7.2)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -227,9 +225,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rake (10.0.3)
-    rdoc (3.12.2)
-      json (~> 1.4)
+    rake (10.0.4)
     redis (3.0.3)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
@@ -259,7 +255,7 @@ GEM
       temple (~> 0.4.1)
       tilt (~> 1.3.3)
     slop (3.4.4)
-    sprockets (2.9.0)
+    sprockets (2.9.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -268,10 +264,10 @@ GEM
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
       ref
-    thor (0.17.0)
+    thor (0.18.1)
     thread_safe (0.1.0)
       atomic
-    tilt (1.3.6)
+    tilt (1.3.7)
     timers (1.1.0)
     tire (0.5.5)
       activemodel (>= 3.0)
@@ -314,7 +310,6 @@ DEPENDENCIES
   jquery-rails
   kaminari
   less-rails
-  libv8 (~> 3.11.8)
   miniskirt
   minitest-rails
   minitest-rails-capybara

@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20130216232120) do
 
   create_table "breweries", force: true do |t|
     t.string   "name"
-    t.string   "alternate_name"
+    t.string   "alternate_names",           array: true
     t.text     "description"
     t.string   "website"
     t.boolean  "organic"
     t.integer  "established"
     t.string   "permalink"
-    t.string   "image_id",       limit: 6
-    t.string   "brewerydb_id",   limit: 6
+    t.string   "image_id",        limit: 6
+    t.string   "brewerydb_id",    limit: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end

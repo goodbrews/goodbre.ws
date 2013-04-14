@@ -4,13 +4,26 @@
 module BreweryDB
   module Synchronizers
     class Event < Base
+      def handle_removed!
+        ::Event.find_each do |event|
+          response = @client.get("/event/#{event.brewerydb_id}")
+
+          if response.body['data']['status'] == 'deleted'
+            puts "Deleted event: #{event.name}"
+            event.destroy
+          end
+        end
+      end
+
       protected
-        def fetch
-          @client.get('/events', p: @page)
+        def fetch(options = {})
+          params = { p: @page }.merge(options)
+          @client.get('/events', params)
         end
 
         def update!(attributes)
           event = ::Event.find_or_initialize_by(brewerydb_id: attributes['id'])
+
           event.assign_attributes({
             name:        attributes['name'],
             year:        attributes['year'],
@@ -44,7 +57,20 @@ module BreweryDB
             event.image_id = attributes['images']['icon'].match(/upload_(\w+)-icon/)[1]
           end
 
+          if event.new_record?
+            puts "New event: #{event.name}"
+          end
+
           event.save!
+        end
+
+        def destroy!(attributes)
+          event = ::Event.find_by(brewerydb_id: attributes['id'])
+
+          if event.present?
+            puts "Deleted event: #{event.name}"
+            event.destroy
+          end
         end
     end
   end
